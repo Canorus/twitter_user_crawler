@@ -44,8 +44,8 @@ def run_selenium():
 def get_page(browser, url):
     browser.get(url)
     sleep(5)
-    with open('sample.html', 'w') as fw:
-        fw.write(browser.page_source)
+    #with open('sample.html', 'w') as fw:
+    #    fw.write(browser.page_source)
 
 def browser_close(browser):
     browser.close()
