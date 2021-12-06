@@ -24,6 +24,9 @@ def parse_body(t):
         url_attached = get_link(article) # get attached link
         if url_attached:
             status += '\n' + url_attached
+        if len(get_img(article)):
+            image_list = get_img(article)
+            status += '\n' + ','.join(image_list)
         status_list.append(status)
         logger.debug(status)
         if sn != None:
@@ -48,7 +51,7 @@ def get_link(t :bs):
 def get_sn(t :bs):
     a_list = t.find_all('a')
     for ai in a_list:
-        if re.search('\/status\/\d*$', ai['href']):
+        if not ai['href'].startswith('http') and re.search('\/status\/\d*$', ai['href']):
             logger.debug('sn: ' + ai['href'].split('/')[-1])
             return ai['href'].split('/')[-1]
 
@@ -68,3 +71,11 @@ def is_in_history(s :str):
         return True
     else:
         return False
+
+def get_img(t :bs):
+    res = list()
+    for im in t.find_all('img', attrs={'alt':'Image'}):
+        if re.search('/media/.*$', im['src']):
+            res.append(re.sub('&.*$', '', im['src']))
+    return res
+    
