@@ -61,6 +61,8 @@ def add_to_history(s :str):
         fa.write('\n' + s)
 
 def read_history():
+    if not os.path.exists(os.path.join(base, 'history.db')):
+        add_to_history('')
     with open(os.path.join(base, 'history.db')) as f:
         t = [x.strip() for x in f.read().split('\n') if x != '']
     return t
